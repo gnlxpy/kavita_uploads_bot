@@ -1,0 +1,3 @@
+import os
+
+os.environ['BOT_TOKEN'] = '7707050535:AAEePLZZYLU41ZTo5_SGTjQgiKxT8MiALFk'
