@@ -18,4 +18,4 @@ COPY . .
 ENV BOT_TOKEN=""
 
 # Запускаем приложение
-CMD ["python", "bot.py"]
+CMD ["python", "main.py"]
