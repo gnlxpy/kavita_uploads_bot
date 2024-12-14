@@ -1,6 +1,7 @@
 import logging
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
+from aiogram.exceptions import TelegramRetryAfter
 import asyncio
 import os
 
@@ -54,8 +55,16 @@ async def handle_document(message: types.Message):
 
 
 async def main():
-    # Запуск бота
-    await dp.start_polling(bot)
+    while True:
+        try:
+            # Запуск бота с параметрами
+            await dp.start_polling(bot, skip_updates=True, timeout=10)
+        except TelegramRetryAfter as e:
+            logging.warning(f"Flood control exceeded. Retry after {e.retry_after} seconds.")
+            await asyncio.sleep(e.retry_after)
+        except Exception as e:
+            logging.error(f"Произошла ошибка: {e}")
+            await asyncio.sleep(5)  # Ждем немного перед повторной попыткой
 
 if __name__ == "__main__":
     asyncio.run(main())
